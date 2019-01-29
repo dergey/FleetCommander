@@ -1,9 +1,10 @@
 package de.spries.fleetcommander.model.ai.behavior;
 
-import de.spries.fleetcommander.model.facade.PlayerSpecificUniverse;
+import de.spries.fleetcommander.model.Player;
+import de.spries.fleetcommander.model.universe.Universe;
 
 public interface BuildingStrategy {
 
-	void buildFactories(PlayerSpecificUniverse universe);
+	void buildFactories(Universe universe, Player player);
 
 }

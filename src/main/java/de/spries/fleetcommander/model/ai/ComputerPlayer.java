@@ -1,14 +1,11 @@
 package de.spries.fleetcommander.model.ai;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import de.spries.fleetcommander.model.Game;
+import de.spries.fleetcommander.model.Player;
 import de.spries.fleetcommander.model.ai.behavior.BuildingStrategy;
 import de.spries.fleetcommander.model.ai.behavior.FleetStrategy;
-import de.spries.fleetcommander.model.core.Game;
-import de.spries.fleetcommander.model.core.Player;
-import de.spries.fleetcommander.model.facade.PlayerSpecificGame;
-import de.spries.fleetcommander.model.facade.PlayerSpecificUniverse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ComputerPlayer extends Player {
 
@@ -31,7 +28,7 @@ public class ComputerPlayer extends Player {
 	@Override
 	public void notifyNewTurn(Game game) {
 		try {
-			playTurn(new PlayerSpecificGame(game, this));
+			playTurn(game);
 		} catch (Exception e) {
 			// Just end the turn (still it shouldn't happen)
 			String msg = String.format("Game %d: Computer player '%s' caused an exception: ", game.getId(), getName());
@@ -40,10 +37,9 @@ public class ComputerPlayer extends Player {
 		game.endTurn(this);
 	}
 
-	public void playTurn(PlayerSpecificGame game) {
-		PlayerSpecificUniverse universe = game.getUniverse();
-		buildingStrategy.buildFactories(universe);
-		fleetStrategy.sendShips(universe);
+	public void playTurn(Game game) {
+		buildingStrategy.buildFactories(game.getUniverse(), this);
+		fleetStrategy.sendShips(game.getUniverse(), this);
 	}
 
 }
